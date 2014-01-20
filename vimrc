@@ -3,8 +3,7 @@
 " + Толковая подсветка исходного кода.
 " - Навигация.
 "   + по буферам = bufexplorer
-"   + по файлам = NERDTree
-"   - по коду
+"   + по файлам = NERDTree "   - по коду
 " - Проверка орфографии: английский, русский.
 " + Научить понимать русский язык.
 "   + раскладка
@@ -123,5 +122,3 @@ nmap <F8> :NERDTreeToggle<CR>
 nmap <F9> :TagbarToggle<CR> 
 
 autocmd FileType php call SetPHPHotKeys()
-
-let g:syntastic_cpp_compiler_options = ' -std=c++11 '
