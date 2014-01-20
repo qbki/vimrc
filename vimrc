@@ -28,6 +28,12 @@ endif
 " настроек, позволяя применять даже плагины без перезагрузки редактора
 autocmd! bufwritepost $MYVIMRC source $MYVIMRC
 
+set backup
+set backupdir=$HOME/.vim/backup/
+set directory=$HOME/.vim/backup/
+silent execute '!mkdir -p $HOME/.vim/backup'
+set noswapfile
+
 " +++ Пакетный менеджер +++
 " source = http://habrahabr.ru/post/148549/
 set nocompatible
