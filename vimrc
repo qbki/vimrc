@@ -20,6 +20,10 @@
 " понимать: индентация, автодополнение, комментирование, подсветка ошибок на
 " лету. [список не полон]
 
+if has('gui_running')
+  set guifont=Droid\ Sans\ Mono\ 10
+endif
+
 " автоматически перезагружает конфигурацию vim после сохранения файла
 " настроек, позволяя применять даже плагины без перезагрузки редактора
 autocmd! bufwritepost $MYVIMRC source $MYVIMRC
@@ -108,17 +112,26 @@ endfunction
 " поменять эту функцию
 let g:langCheck = 0
 function! ToggleLangCheck()
-	if g:langCheck == 0
-		let g:langCheck = 1
-		set nospell
-	else
+	if g:langCheck == 1
 		let g:langCheck = 0
-		set spell spelllang=ru,en
+	else
+		let g:langCheck = 1
 	endif
+
+  if g:langCheck == 1
+		set spell spelllang=ru,en
+  else
+		set nospell
+  endif
+
 endfunction
 
 " +++ HotKeys +++
 nmap <F8> :NERDTreeToggle<CR>
 nmap <F9> :TagbarToggle<CR> 
+nmap <F7> :call ToggleLangCheck()<CR>
+nmap <F5> "+p
+imap <F5> <ESC>"+pi
+vmap <F4> "+y
 
 autocmd FileType php call SetPHPHotKeys()
