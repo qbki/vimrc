@@ -51,6 +51,8 @@ Bundle 'rails.vim'
 " JavaScript
 Bundle 'javascript-libraries-syntax.vim'
 Bundle 'https://github.com/SirVer/ultisnips.git'
+" To HTML tag jump
+Bundle 'https://github.com/vim-scripts/matchit.zip.git'
 
 filetype plugin indent on " обязательно! автоматическое определение индентации в файлах.
 
