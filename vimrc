@@ -1,27 +1,9 @@
-" TODO
-" + Менеджер пакетов.
-" + Толковая подсветка исходного кода.
-" - Навигация.
-"   + по буферам = bufexplorer
-"   + по файлам = NERDTree "   - по коду
-" - Проверка орфографии: английский, русский.
-" + Научить понимать русский язык.
-"   + раскладка
-" - Научить понимать PHP.
-"   + комментирование = PDV--phpDocumentor-for-Vim
-" - Научить понимать HTML (4, 5).
-" - Научить понимать CSS.
-" - Научить понимать JavaScript (включая JQuery, node.js)
-" - Научить работать с БД.
-"   - Подключение к БД.
-"   - Автодополнение.
-"   - Запросы.
-" - Адаптировать для KDE.
-" понимать: индентация, автодополнение, комментирование, подсветка ошибок на
-" лету. [список не полон]
-
 if has('gui_running')
   set guifont=Droid\ Sans\ Mono\ 10
+  set guioptions-=m  "remove menu bar
+  set guioptions-=T  "remove toolbar
+  set guioptions-=r  "remove right-hand scroll bar
+  set guioptions-=L  "remove left-hand scroll bar
 endif
 
 " автоматически перезагружает конфигурацию vim после сохранения файла
@@ -136,8 +118,10 @@ endfunction
 nmap <F8> :NERDTreeToggle<CR>
 nmap <F9> :TagbarToggle<CR> 
 nmap <F7> :call ToggleLangCheck()<CR>
+" paste from clipboard
 nmap <F5> "+p
 imap <F5> <ESC>"+pi
+" copy to clipboard
 vmap <F4> "+y
 
 autocmd FileType php call SetPHPHotKeys()
