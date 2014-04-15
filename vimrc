@@ -79,13 +79,13 @@ set iminsert=0
 set imsearch=0 
 
 " +++ Отступы +++
-set tabstop=2
-set softtabstop=2
-set shiftwidth=2
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
 set expandtab
 set smartindent
 
-" +++ Подсветка синтаксиса
+" +++ Подсветка синтаксиса +++
 syntax on
 
 " +++ Поддержка PHP +++
@@ -96,6 +96,8 @@ function! SetPHPHotKeys()
 	nnoremap <M-d> :call PhpDocSingle()<CR> 
 	vnoremap <M-d> :call PhpDocRange()<CR> 
 endfunction
+
+autocmd FileType php call SetPHPHotKeys()
 
 " +++ Проверка орфографии +++
 " TODO подгадил в глобальное пространство имен, узнать больше про скриптинг и
@@ -108,22 +110,24 @@ function! ToggleLangCheck()
 		let g:langCheck = 1
 	endif
 
-  if g:langCheck == 1
+    if g:langCheck == 1
+        echo 'spell checking on'
 		set spell spelllang=ru,en
-  else
+    else
+        echo 'spell checking off'
 		set nospell
-  endif
-
+    endif
 endfunction
 
 " +++ HotKeys +++
-nmap <F8> :NERDTreeToggle<CR>
-nmap <F9> :TagbarToggle<CR> 
-nmap <F7> :call ToggleLangCheck()<CR>
+nnoremap <F8> :NERDTreeToggle<CR>
+nnoremap <F9> :TagbarToggle<CR> 
+nnoremap <F7> :call ToggleLangCheck()<CR>
 " paste from clipboard
-nmap <F5> "+p
-imap <F5> <ESC>"+pi
+nnoremap <F5> "+p
+inoremap <F5> <ESC>"+pi
 " copy to clipboard
-vmap <F4> "+y
+vnoremap <F4> "+y
+" change language
+inoremap <C-l> <C-^>
 
-autocmd FileType php call SetPHPHotKeys()
