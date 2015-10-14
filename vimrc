@@ -21,39 +21,28 @@ set noswapfile
 set nocompatible
 filetype off " обязательно!
 
-set rtp+=~/.vim/bundle/vundle/
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 
-call vundle#rc()
-
-Bundle 'vundle'
-Bundle 'https://github.com/Valloric/YouCompleteMe.git'
-" взял с github т.к. с vim.org не работает меню для управления элементами
-" каталога по нажатию клавиши [m].
-Bundle 'git://github.com/scrooloose/nerdtree.git'
-Bundle 'git://github.com/scrooloose/nerdcommenter.git'
-Bundle 'git://github.com/tpope/vim-surround.git'
-Bundle 'bufexplorer.zip'
-Bundle 'PDV--phpDocumentor-for-Vim'
-" Bundle 'git://github.com/ervandew/supertab.git'
-Bundle 'git://github.com/StanAngeloff/php.vim.git'
-Bundle 'git://github.com/othree/html5.vim.git'
-" Bundle 'git://github.com/msanders/snipmate.vim.git'
-Bundle 'git://github.com/majutsushi/tagbar.git'
-Bundle 'https://github.com/mattn/emmet-vim.git'
-Bundle 'git://github.com/scrooloose/syntastic.git'
-Bundle 'https://github.com/othree/javascript-libraries-syntax.vim.git'
-" Bundle 'SyntaxComplete'
-" Bundle 'clang-complete'
-" Bundle 'Cpp11-Syntax-Support'
-" Bundle 'OmniCppComplete'
-" Ruby & Rails
-Bundle 'rails.vim'
+Plugin 'vundle'
+Plugin 'git://github.com/scrooloose/nerdtree.git'
+Plugin 'git://github.com/scrooloose/nerdcommenter.git'
+Plugin 'git://github.com/tpope/vim-surround.git'
+Plugin 'bufexplorer.zip'
+Plugin 'PDV--phpDocumentor-for-Vim'
+Plugin 'git://github.com/ervandew/supertab.git'
+Plugin 'git://github.com/StanAngeloff/php.vim.git'
+Plugin 'git://github.com/othree/html5.vim.git'
+Plugin 'git://github.com/msanders/snipmate.vim.git'
+Plugin 'git://github.com/majutsushi/tagbar.git'
+Plugin 'https://github.com/mattn/emmet-vim.git'
+Plugin 'git://github.com/scrooloose/syntastic.git'
+Plugin 'https://github.com/othree/javascript-libraries-syntax.vim.git'
 " JavaScript
-Bundle 'javascript-libraries-syntax.vim'
-Bundle 'https://github.com/SirVer/ultisnips.git'
 " To HTML tag jump
-Bundle 'https://github.com/vim-scripts/matchit.zip.git'
+Plugin 'https://github.com/vim-scripts/matchit.zip.git'
 
+call vundle#end() 
 filetype plugin indent on " обязательно! автоматическое определение индентации в файлах.
 
 " +++ Цветовая схема +++
