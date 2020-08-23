@@ -1,5 +1,9 @@
+set nomodeline
+set nofixendofline
+set nocompatible
+colorscheme rootwater
+
 if has('gui_running')
-  "set guifont=Droid\ Sans\ Mono\ 10
   set guifont=Deja\ Vu\ Sans\ Mono\ 13
   "set guioptions-=m  "remove menu bar
   set guioptions-=T  "remove toolbar
@@ -7,95 +11,88 @@ if has('gui_running')
   set guioptions-=L  "remove left-hand scroll bar
 endif
 
-" автоматически перезагружает конфигурацию vim после сохранения файла
-"
-" настроек, позволяя применять даже плагины без перезагрузки редактора
-autocmd! bufwritepost $MYVIMRC source $MYVIMRC
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved.
+if has("patch-8.1.1564")
+  " Recently vim can merge signcolumn and number column into one
+  set signcolumn=number
+else
+  set signcolumn=yes
+endif
 
-set backup
-set backupdir=$HOME/.vim/backup/
-set directory=$HOME/.vim/backup/
-silent execute '!mkdir -p $HOME/.vim/backup'
+call plug#begin('~/.vim/plugged')
+Plug 'HerringtonDarkholme/yats.vim'
+Plug 'honza/vim-snippets'
+Plug 'jlanzarotta/bufexplorer'
+Plug 'majutsushi/tagbar'
+Plug 'mileszs/ack.vim'
+Plug 'mtscout6/syntastic-local-eslint.vim'
+Plug 'mxw/vim-jsx'
+Plug 'neoclide/coc-eslint', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-json', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
+Plug 'othree/html5.vim'
+Plug 'pangloss/vim-javascript'
+Plug 'purescript-contrib/purescript-vim'
+Plug 'rust-lang/rust.vim'
+Plug 'scrooloose/nerdcommenter'
+Plug 'scrooloose/nerdtree'
+Plug 'SirVer/ultisnips'
+Plug 'tikhomirov/vim-glsl'
+Plug 'tpope/vim-fugitive'
+Plug 'vim-scripts/matchit.zip'
+call plug#end()
+
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-j>"
+let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+
+set nobackup
+set nowritebackup
 set noswapfile
 
-" +++ Пакетный менеджер +++
-" source = http://habrahabr.ru/post/148549/
-set nocompatible
-filetype off " обязательно!
+set cmdheight=1
+set updatetime=300
+" Don't pass messages to |ins-completion-menu|.
+set shortmess+=c
 
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'git://github.com/scrooloose/nerdtree.git'
-Plugin 'git://github.com/scrooloose/nerdcommenter.git'
-Plugin 'git://github.com/tpope/vim-surround.git'
-Plugin 'bufexplorer.zip'
-Plugin 'git://github.com/ervandew/supertab.git'
-Plugin 'git://github.com/othree/html5.vim.git'
-Plugin 'git://github.com/msanders/snipmate.vim.git'
-Plugin 'git://github.com/majutsushi/tagbar.git'
-Plugin 'https://github.com/mattn/emmet-vim.git'
-Plugin 'https://github.com/Valloric/YouCompleteMe.git'
-Plugin 'https://github.com/tpope/vim-fugitive.git'
-" Plugin 'https://github.com/w0rp/ale.git'
-Plugin 'git://github.com/scrooloose/syntastic.git'
-" JavaScript
-" Plugin 'https://github.com/othree/javascript-libraries-syntax.vim.git'
-" Plugin 'https://github.com/sheerun/vim-polyglot.git' - broken
-Plugin 'pangloss/vim-javascript'
-Plugin 'mxw/vim-jsx'
-Plugin 'mtscout6/syntastic-local-eslint.vim'
-" TypeScript
-Plugin 'https://github.com/leafgarland/typescript-vim.git'
-" To HTML tag jump
-Plugin 'https://github.com/vim-scripts/matchit.zip.git'
-" Rust
-Plugin 'rust-lang/rust.vim'
-" GLSL
-Plugin 'https://github.com/tikhomirov/vim-glsl'
-Plugin 'mileszs/ack.vim'
-" Python
-" Plugin 'klen/python-mode'
-" Vue
-" Plugin 'https://github.com/natebosch/vim-lsc.git'
-call vundle#end() 
-
-filetype plugin indent on " обязательно! автоматическое определение индентации в файлах.
-
-" +++ Цветовая схема +++
-" source = http://vimcolorschemetest.googlecode.com/svn/colors/rootwater.vim
-colorscheme rootwater
-
-" nnoremap y :YcmForceCompileAndDiagnostics
-" nnoremap pg :YcmCompleter GoToDefinitionElseDeclaration
-" nnoremap pd :YcmCompleter GoToDefinition
-" nnoremap pc :YcmCompleter GoToDeclaration
-
-let g:UltiSnipsExpandTrigger="<c-j>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
-
-" +++ Поддержка русского языка +++
-" source = http://www.allaboutvim.ru/2008/01/blog-post.html
 set keymap=russian-jcukenwin 
-" по умолчанию - латинская раскладка 
 set iminsert=0 
-" по умолчанию - латинская раскладка при поиске 
 set imsearch=0 
 
-" +++ Отступы +++
-set tabstop=2
-set softtabstop=2
-set shiftwidth=2
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
 set expandtab
 set smartindent
 
-" +++ Подсветка синтаксиса +++
-syntax on
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-" +++ Проверка орфографии +++
-" TODO подгадил в глобальное пространство имен, узнать больше про скриптинг и
-" поменять эту функцию
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
+" position. Coc only does snippet and additional edit on confirm.
+" <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
+if exists('*complete_info')
+  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+else
+  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+endif
+
 let g:langCheck = 0
 function! ToggleLangCheck()
 	if g:langCheck == 1
@@ -115,39 +112,117 @@ endfunction
 
 " +++ HotKeys +++
 nnoremap <F8> :NERDTreeToggle<CR>
-nnoremap <F9> :TagbarToggle<CR> 
 nnoremap <F7> :call ToggleLangCheck()<CR>
 " paste from clipboard
+nnoremap <F4> "+y
 nnoremap <F5> "+p
-nnoremap ,g :YcmCompleter GoToDeclaration<CR>
 
+" nnoremap ,g :YcmCompleter GoToDeclaration<CR>
+" nnoremap ,d :YcmCompleter GoToDefinition<CR>
+
+" Use `[g` and `]g` to navigate diagnostics
+" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Symbol renaming.
+nmap <leader>rn <Plug>(coc-rename)
+
+" Formatting selected code.
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder.
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
+" Applying codeAction to the selected region.
+" Example: `<leader>aap` for current paragraph
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+" Remap keys for applying codeAction to the current buffer.
+nmap <leader>ac  <Plug>(coc-codeaction)
+" Apply AutoFix to problem on the current line.
+nmap <leader>qf  <Plug>(coc-fix-current)
+
+" Map function and class text objects
+" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
+xmap if <Plug>(coc-funcobj-i)
+omap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap af <Plug>(coc-funcobj-a)
+xmap ic <Plug>(coc-classobj-i)
+omap ic <Plug>(coc-classobj-i)
+xmap ac <Plug>(coc-classobj-a)
+omap ac <Plug>(coc-classobj-a)
+
+" Use CTRL-S for selections ranges.
+" Requires 'textDocument/selectionRange' support of LS, ex: coc-tsserver
+nmap <silent> <C-s> <Plug>(coc-range-select)
+xmap <silent> <C-s> <Plug>(coc-range-select)
+
+" Add `:Format` command to format current buffer.
+command! -nargs=0 Format :call CocAction('format')
+
+" Add `:Fold` command to fold current buffer.
+command! -nargs=? Fold :call CocAction('fold', <f-args>)
+
+" Add `:OR` command for organize imports of the current buffer.
+command! -nargs=0 OR :call CocAction('runCommand', 'editor.action.organizeImport')
+
+" Add (Neo)Vim's native statusline support.
+" NOTE: Please see `:h coc-status` for integrations with external plugins that
+" provide custom statusline: lightline.vim, vim-airline.
+" set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+
+" Mappings for CoCList
+" Show all diagnostics.
+nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions.
+nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
+" Show commands.
+nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document.
+nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols.
+nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list.
+nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
+
+
+inoremap <F4> <ESC>"+y
 inoremap <F5> <ESC>"+pi
-" copy to clipboard
-vnoremap <F4> "+y
-" change language
+vnoremap ,c "+y
 inoremap <C-l> <C-^>
 
-noremap <F2> <ESC>:w<CR>:!python3 %<CR><CR>
-
-" Use Node.js for JavaScript interpretation
-let $JS_CMD='node'
-
-"if executable('node_modules/.bin/eslint')
-let g:syntastic_javascript_checkers=['eslint']
-"let g:syntastic_typescript_checkers=['tslint']
-"endif
-let g:syntastic_typescript_tslint_exe = "npx tslint"
-let g:syntastic_typescript_checkers = ['tslint']
-
-" autocmd BufRead,BufNewFile /home/gray/projects/work setlocal ts=4 sw=4
-
 let g:NERDSpaceDelims = 1
-
-let g:racer_experimental_completer = 1
-let g:clang_complete_macros = 1
-let g:ycm_confirm_extra_conf = 0
-let g:ycm_rust_src_path = '/home/gray/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src'
-let g:ycm_python_binary_path = '/usr/bin/python3'
-let g:ale_linters = {'rust': ['rls']}
-let g:ale_rust_rls_executable = '/home/gray/.cargo/bin/rls'
-
+let g:coc_disable_startup_warning = 1
