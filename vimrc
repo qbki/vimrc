@@ -1,3 +1,4 @@
+" Modelines have some security vulnerabilities, keep it disabled.
 set nomodeline
 set nofixendofline
 set nocompatible
