@@ -120,9 +120,6 @@ nnoremap <F7> :call ToggleLangCheck()<CR>
 nnoremap <F4> "+y
 nnoremap <F5> "+p
 
-" nnoremap ,g :YcmCompleter GoToDeclaration<CR>
-" nnoremap ,d :YcmCompleter GoToDefinition<CR>
-
 " Use `[g` and `]g` to navigate diagnostics
 " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
