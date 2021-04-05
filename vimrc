@@ -230,7 +230,9 @@ vnoremap <leader>P d<esc>"+P
 vnoremap <leader>x x<esc>:let @+=@"<cr>
 
 " Change language
-noremap <C-l> <C-^>
+nnoremap <C-l> i<C-^><esc>l
+inoremap <C-l> <C-^>
+cnoremap <C-l> <C-^>
 
 let g:NERDSpaceDelims = 1
 let g:coc_disable_startup_warning = 1
