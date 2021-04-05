@@ -1,20 +1,22 @@
 set nomodeline
 set nofixendofline
 set nocompatible
+let mapleader = ','
+
 colorscheme rootwater
 
 if has('gui_running')
   set guifont=Deja\ Vu\ Sans\ Mono\ 13
-  "set guioptions-=m  "remove menu bar
-  set guioptions-=T  "remove toolbar
-  set guioptions-=r  "remove right-hand scroll bar
-  set guioptions-=L  "remove left-hand scroll bar
+  set guioptions+=m  " menu bar
+  set guioptions-=T  " toolbar
+  set guioptions-=r  " right-hand scroll bar
+  set guioptions-=L  " left-hand scroll bar
 endif
 
 " Always show the signcolumn, otherwise it would shift the text each time
 " diagnostics appear/become resolved.
-if has("patch-8.1.1564")
-  " Recently vim can merge signcolumn and number column into one
+if has('patch-8.1.1564')
+  set nu
   set signcolumn=number
 else
   set signcolumn=yes
@@ -212,17 +214,25 @@ nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
 " Search workspace symbols.
 nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
 " Do default action for next item.
-nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
+nnoremap <silent><nowait> <space>j  :<C-u>CocNext<cr>
 " Do default action for previous item.
-nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
+nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<cr>
 " Resume latest coc list.
-nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
+nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<cr>
 
+" Clipboard
+" To copy from command line you should type `q:` and yank as usual.
+" To past into command line you should type `:<C-r>+`.
+nnoremap <leader>y <esc>"+y
+nnoremap <leader>p <esc>"+p
+nnoremap <leader>P <esc>"+P
+vnoremap <leader>y "+y<esc>
+vnoremap <leader>p d<esc>"+p
+vnoremap <leader>P d<esc>"+P
+vnoremap <leader>x x<esc>:let @+=@"<cr>
 
-inoremap <F4> <ESC>"+y
-inoremap <F5> <ESC>"+pi
-vnoremap ,c "+y
-inoremap <C-l> <C-^>
+" Change language
+noremap <C-l> <C-^>
 
 let g:NERDSpaceDelims = 1
 let g:coc_disable_startup_warning = 1
