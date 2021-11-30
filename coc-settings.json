@@ -1,12 +1,12 @@
 {
     "tsserver.npm": "/usr/local/bin/node",
-    "eslint.filetypes": ["javascript", "javascriptreact", "typescript"],
+    "eslint.filetypes": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
     "languageserver": {
-        "purescript": {
-            "command": "purescript-language-server",
-            "args": ["--stdio", "--config {}"],
-            "filetypes": ["purescript"],
-            "rootPatterns": ["bower.json", "psc-package.json", "spago.dhall"]
+        "haskell": {
+            "command": "haskell-language-server-wrapper",
+            "args": ["--lsp"],
+            "rootPatterns": ["*.cabal", "stack.yaml", "cabal.project", "package.yaml", "hie.yaml"],
+            "filetypes": ["haskell", "lhaskell"]
         }
     }
 }

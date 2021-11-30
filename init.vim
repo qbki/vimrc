@@ -1,10 +1,38 @@
-" Modelines have some security vulnerabilities, keep it disabled.
+" Backup file settings
+set nobackup
+set nowritebackup
+set noswapfile
+
+" Command line settings
+set cmdheight=1
+set updatetime=300
+" Don't pass messages to |ins-completion-menu|.
+set shortmess+=c
+
+" Russia language support
+set keymap=russian-jcukenwin 
+set iminsert=0 
+set imsearch=0 
+
+" Indentation
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set expandtab
+set smartindent
+
+" Misc
+let mapleader = ','
+colorscheme rootwater
+
+" Mouse support
+set mousemodel=extend
+set mouse=a
+
+" NOTE: Modelines have some security vulnerabilities, keep it disabled.
 set nomodeline
 set nofixendofline
 set nocompatible
-let mapleader = ','
-
-colorscheme rootwater
 
 if has('gui_running')
   set guifont=Deja\ Vu\ Sans\ Mono\ 13
@@ -23,21 +51,11 @@ else
   set signcolumn=yes
 endif
 
-call plug#begin('~/.vim/plugged')
-Plug 'HerringtonDarkholme/yats.vim'
-Plug 'honza/vim-snippets'
+call plug#begin(stdpath('data') . '/plugged')
+Plug 'honza/vim-snippets' " snippets for ultisnips
 Plug 'jlanzarotta/bufexplorer'
 Plug 'majutsushi/tagbar'
 Plug 'mileszs/ack.vim'
-Plug 'mtscout6/syntastic-local-eslint.vim'
-Plug 'mxw/vim-jsx'
-Plug 'neoclide/coc-eslint', {'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/coc-json', {'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
-Plug 'othree/html5.vim'
-Plug 'pangloss/vim-javascript'
-Plug 'purescript-contrib/purescript-vim'
 Plug 'rust-lang/rust.vim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
@@ -45,30 +63,17 @@ Plug 'SirVer/ultisnips'
 Plug 'tikhomirov/vim-glsl'
 Plug 'tpope/vim-fugitive'
 Plug 'vim-scripts/matchit.zip'
+Plug 'puremourning/vimspector'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'pangloss/vim-javascript'
+Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
+Plug 'HerringtonDarkholme/yats.vim'
+Plug 'neoclide/coc-eslint', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-json', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
 call plug#end()
-
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-j>"
-let g:UltiSnipsJumpBackwardTrigger="<c-k>"
-
-set nobackup
-set nowritebackup
-set noswapfile
-
-set cmdheight=1
-set updatetime=300
-" Don't pass messages to |ins-completion-menu|.
-set shortmess+=c
-
-set keymap=russian-jcukenwin 
-set iminsert=0 
-set imsearch=0 
-
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
-set expandtab
-set smartindent
 
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
@@ -112,13 +117,6 @@ function! ToggleLangCheck()
 		set nospell
     endif
 endfunction
-
-" +++ HotKeys +++
-nnoremap <F8> :NERDTreeToggle<CR>
-nnoremap <F7> :call ToggleLangCheck()<CR>
-" paste from clipboard
-nnoremap <F4> "+y
-nnoremap <F5> "+p
 
 " Use `[g` and `]g` to navigate diagnostics
 " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
@@ -218,6 +216,11 @@ nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<cr>
 " Resume latest coc list.
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<cr>
 
+nnoremap <nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+nnoremap <nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+inoremap <nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+inoremap <nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+
 " Clipboard
 " To copy from command line you should type `q:` and yank as usual.
 " To past into command line you should type `:<C-r>+`.
@@ -234,5 +237,23 @@ nnoremap <C-l> i<C-^><esc>l
 inoremap <C-l> <C-^>
 cnoremap <C-l> <C-^>
 
+" Misc
+nnoremap <leader>t :NERDTreeToggle<CR>
+nnoremap <leader>l :call ToggleLangCheck()<CR>
+
+
 let g:NERDSpaceDelims = 1
+
 let g:coc_disable_startup_warning = 1
+
+let g:UltiSnipsExpandTrigger='<C-b>'
+let g:UltiSnipsJumpForwardTrigger='<C-j>'
+let g:UltiSnipsJumpBackwardTrigger='<C-k>'
+let g:UltiSnipsSnippetDirectories=['UltiSnips']
+
+let g:vimspector_enable_mappings = 'HUMAN'
+
+" Fixed broken highlight
+autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
+autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
+
