@@ -10,9 +10,9 @@ set updatetime=300
 set shortmess+=c
 
 " Russia language support
-set keymap=russian-jcukenwin 
-set iminsert=0 
-set imsearch=0 
+set keymap=russian-jcukenwin
+set iminsert=0
+set imsearch=0
 
 " Indentation
 set tabstop=4
@@ -54,52 +54,49 @@ endif
 call plug#begin(stdpath('data') . '/plugged')
 Plug 'honza/vim-snippets' " snippets for ultisnips
 Plug 'jlanzarotta/bufexplorer'
-Plug 'majutsushi/tagbar'
 Plug 'mileszs/ack.vim'
 Plug 'rust-lang/rust.vim'
 Plug 'scrooloose/nerdcommenter'
-Plug 'scrooloose/nerdtree'
 Plug 'SirVer/ultisnips'
 Plug 'tikhomirov/vim-glsl'
 Plug 'tpope/vim-fugitive'
+Plug 'nvim-tree/nvim-tree.lua'
 Plug 'vim-scripts/matchit.zip'
 Plug 'puremourning/vimspector'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'pangloss/vim-javascript'
 Plug 'leafgarland/typescript-vim'
-Plug 'peitalin/vim-jsx-typescript'
 Plug 'HerringtonDarkholme/yats.vim'
-Plug 'neoclide/coc-eslint', {'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/coc-json', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
 call plug#end()
+let g:coc_global_extensions = ['coc-eslint',  'coc-json', 'coc-tsserver']
 
-" Use tab for trigger completion with characters ahead and navigate.
+" Use tab for trigger completion with characters ahead and navigate
+" NOTE: There's always complete item selected by default, you may want to enable
+" no select by `"suggest.noselect": true` in your configuration file
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
-" other plugin before putting this into your config.
+" other plugin before putting this into your config
 inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ CheckBackspace() ? "\<Tab>" :
       \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-" Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
-
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
-" position. Coc only does snippet and additional edit on confirm.
-" <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
-if exists('*complete_info')
-  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+" Use <c-space> to trigger completion
+if has('nvim')
+  inoremap <silent><expr> <c-space> coc#refresh()
 else
-  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+  inoremap <silent><expr> <c-@> coc#refresh()
 endif
+
+" Make <CR> to accept selected completion item or notify coc.nvim to format
+" <C-g>u breaks current undo, please make your own choice
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 let g:langCheck = 0
 function! ToggleLangCheck()
@@ -221,7 +218,7 @@ nnoremap <nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<
 inoremap <nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
 inoremap <nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
 
-" Clipboard
+" ----- Clipboard -----
 " To copy from command line you should type `q:` and yank as usual.
 " To past into command line you should type `:<C-r>+`.
 nnoremap <leader>y <esc>"+y
@@ -232,17 +229,13 @@ vnoremap <leader>p d<esc>"+p
 vnoremap <leader>P d<esc>"+P
 vnoremap <leader>x x<esc>:let @+=@"<cr>
 
-" Change language
+" ----- Change language -----
 nnoremap <C-l> i<C-^><esc>l
 inoremap <C-l> <C-^>
 cnoremap <C-l> <C-^>
 
-" Misc
-nnoremap <leader>t :NERDTreeToggle<CR>
+" ----- Misc -----
 nnoremap <leader>l :call ToggleLangCheck()<CR>
-
-
-let g:NERDSpaceDelims = 1
 
 let g:coc_disable_startup_warning = 1
 
@@ -253,7 +246,76 @@ let g:UltiSnipsSnippetDirectories=['UltiSnips']
 
 let g:vimspector_enable_mappings = 'HUMAN'
 
-" Fixed broken highlight
+" ----- Fixed broken highlight -----
 autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
 autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
 
+" ----- Directory Tree -----
+lua << EOF
+-- disable netrw at the very start of your init.lua (strongly advised)
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
+-- set termguicolors to enable highlight groups
+vim.opt.termguicolors = true
+
+-- empty setup using defaults
+require("nvim-tree").setup()
+
+-- OR setup with some options
+require("nvim-tree").setup({
+  sort_by = "case_sensitive",
+  view = {
+    width = 30,
+    mappings = {
+      list = {
+        { key = "u", action = "dir_up" },
+      },
+    },
+  },
+  renderer = {
+    group_empty = false,
+    icons = {
+      show = {
+        file = false,
+        folder = false,
+      },
+      glyphs = {
+        symlink = "☞",
+        modified = "●",
+        folder = {
+          arrow_closed = "⮞",
+          arrow_open = "⮟",
+          default = "🗀",
+          open = "🗁",
+          empty = "⮊",
+          empty_open = "⮋",
+          symlink = "☞",
+          symlink_open = "☟",
+        },
+      },
+    },
+  },
+  filters = {
+    dotfiles = true,
+  },
+  git = {
+    enable = false,
+    show_on_dirs = false,
+  },
+  diagnostics = {
+    enable = true,
+    show_on_dirs = true,
+    show_on_open_dirs = true,
+    icons = {
+      hint = "?",
+      info = "i",
+      warning = "!",
+      error = "!",
+    },
+  },
+})
+EOF
+
+nnoremap <leader>t :NvimTreeOpen<CR>
+nnoremap <leader>f :NvimTreeFindFile<CR>

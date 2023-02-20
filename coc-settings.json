@@ -1,12 +1,33 @@
 {
-    "tsserver.npm": "/usr/local/bin/node",
-    "eslint.filetypes": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
-    "languageserver": {
-        "haskell": {
-            "command": "haskell-language-server-wrapper",
-            "args": ["--lsp"],
-            "rootPatterns": ["*.cabal", "stack.yaml", "cabal.project", "package.yaml", "hie.yaml"],
-            "filetypes": ["haskell", "lhaskell"]
-        }
+  "tsserver.npm": "/usr/local/bin/node",
+  "languageserver": {
+    "haskell": {
+      "command": "haskell-language-server-wrapper",
+      "args": [
+        "--lsp"
+      ],
+      "rootPatterns": [
+        "*.cabal",
+        "stack.yaml",
+        "cabal.project",
+        "package.yaml",
+        "hie.yaml"
+      ],
+      "filetypes": [
+        "haskell",
+        "lhaskell"
+      ]
+    },
+    "racket": {
+      "command": "racket",
+      "args": [
+        "-l",
+        "racket-langserver"
+      ],
+      "filetypes": [
+        "scheme",
+        "rkt"
+      ]
     }
+  }
 }
