@@ -65,9 +65,8 @@ Plug 'vim-scripts/matchit.zip'
 Plug 'puremourning/vimspector'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'pangloss/vim-javascript'
-Plug 'leafgarland/typescript-vim'
-Plug 'HerringtonDarkholme/yats.vim'
 Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 call plug#end()
 let g:coc_global_extensions = ['coc-eslint',  'coc-json', 'coc-tsserver']
 
@@ -319,3 +318,30 @@ EOF
 
 nnoremap <leader>t :NvimTreeOpen<CR>
 nnoremap <leader>f :NvimTreeFindFile<CR>
+
+
+lua << EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = { "typescript" },
+  sync_install = false,
+  auto_install = true,
+
+  highlight = {
+    enable = true,
+
+    disable = function(lang, buf)
+        local max_filesize = 100 * 1024 -- 100 KB
+        local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+        if ok and stats and stats.size > max_filesize then
+            return true
+        end
+    end,
+
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = false,
+  },
+}
+EOF

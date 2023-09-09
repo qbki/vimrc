@@ -1,5 +1,6 @@
 {
   "tsserver.npm": "/usr/local/bin/node",
+  "inlayHint.enable": false,
   "languageserver": {
     "haskell": {
       "command": "haskell-language-server-wrapper",
