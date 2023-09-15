@@ -52,7 +52,12 @@ else
 endif
 
 let PLUGIN_DIR = stdpath('data') . '/plugged'
-let CONFIG_DIR = stdpath('config')
+
+function! IncludeConfig(config_relative_path)
+  let l:config_dir = stdpath('config')
+  execute 'source ' . l:config_dir . '/' . a:config_relative_path
+endfunction
+
 
 call plug#begin(PLUGIN_DIR)
 Plug 'honza/vim-snippets' " snippets for ultisnips
@@ -73,7 +78,7 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 call plug#end()
 let g:coc_global_extensions = ['coc-eslint',  'coc-json', 'coc-tsserver']
 
-source ./src/utils.vim
+call IncludeConfig('src/coc.nvim.vim')
 
 " ----- Clipboard -----
 " To copy from command line you should type `q:` and yank as usual.
@@ -103,20 +108,16 @@ let g:UltiSnipsSnippetDirectories=['UltiSnips']
 
 let g:vimspector_enable_mappings = 'HUMAN'
 
-" ----- Fixed broken highlight ----- Remove if treesitter works
-" autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
-" autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
-
 if isdirectory(PLUGIN_DIR . '/coc.nvim')
-  source ./src/coc.nvim.vim
+  call IncludeConfig('./src/coc.nvim.vim')
 endif
 
 if isdirectory(PLUGIN_DIR . '/nvim-tree.lua')
-  source ./src/nvim-tree.lua
+  call IncludeConfig('./src/nvim-tree.lua')
   nnoremap <leader>t :NvimTreeOpen<CR>
   nnoremap <leader>f :NvimTreeFindFile<CR>
 endif
 
 if isdirectory(PLUGIN_DIR . '/nvim-treesitter')
-  source ./src/nvim-treesitter.lua
+  call IncludeConfig('./src/nvim-treesitter.lua')
 endif
